@@ -1,67 +1,51 @@
 import Item from '../entities/Item.js';
-
 import CollisionSystem from './CollisionSystem.js';
 
-export default class ItemSystem{
+export default class ItemSystem {
 
-    constructor(scene, player){
-
+    // 1. Agregamos mapName como parámetro
+    constructor(scene, player, mapName) {
         this.scene = scene;
-
         this.player = player;
-
+        this.mapName = mapName; // Guardamos el mapa actual
         this.items = [];
 
         this.spawnItems();
-
     }
 
-    spawnItems(){
+    spawnItems() {
+        // 2. Dependiendo del mapa, ponemos diferentes posiciones
+        
+        if (this.mapName === "1") {
+            // Posiciones para el Escenario 1 (Día)
+            this.items.push(new Item(this.scene, "speed", 5, 1, 5));
+            this.items.push(new Item(this.scene, "life", -10, 1, -10));
+            this.items.push(new Item(this.scene, "ghost", 15, 1, -5));
+            this.items.push(new Item(this.scene, "time", -15, 1, 8));
+            console.log("Ítems generados para el Mapa 1");
 
-        const item1 =
-            new Item(
-                this.scene,
-                "speed",
-                5,
-                1,
-                5
-            );
+        } else if (this.mapName === "2") {
+            // Posiciones para el Escenario 2 (Arcoíris)
+            // (Cambia estos números X, Y, Z usando tu recuadro flotante de debug)
+            this.items.push(new Item(this.scene, "speed", 20, 1, 20));
+            this.items.push(new Item(this.scene, "life", -20, 1, -20));
+            this.items.push(new Item(this.scene, "ghost", 25, 1, -15));
+            this.items.push(new Item(this.scene, "time", -25, 1, 18));
+            console.log("Ítems generados para el Mapa 2");
 
-        const item2 =
-            new Item(
-                this.scene,
-                "life",
-                -10,
-                1,
-                -10
-            );
-
-        const item3 =
-            new Item(
-                this.scene,
-                "ghost",
-                15,
-                1,
-                -5
-            );
-
-        const item4 =
-        new Item(
-            this.scene,
-            "time",
-            -15,
-            1,
-            8
-        );
-
-            this.items.push(
-            item1,
-            item2,
-            item3,
-            item4
-        );
-
-
+        } else if (this.mapName === "3") {
+            // Posiciones para el Escenario 3 (Rojo)
+            this.items.push(new Item(this.scene, "speed", 12, 1, -30));
+            this.items.push(new Item(this.scene, "life", -12, 1, 30));
+            this.items.push(new Item(this.scene, "ghost", 8, 1, -10));
+            this.items.push(new Item(this.scene, "time", -8, 1, 20));
+            console.log("Ítems generados para el Mapa 3");
+            
+        } else {
+            // Por si acaso no detecta el mapa, unas posiciones por defecto
+            this.items.push(new Item(this.scene, "speed", 5, 1, 5));
+            this.items.push(new Item(this.scene, "life", -5, 1, -5));
+        }
     }
 
     update(){
