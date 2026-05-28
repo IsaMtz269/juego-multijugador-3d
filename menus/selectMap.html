@@ -1,46 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
-
-    <title>
-        Seleccionar mapa
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="/public/css/menu.css"
-    >
-
+    <title>Seleccionar mapa</title>
+    <link rel="stylesheet" href="/menus/css/selectMap.css">
 </head>
-
 <body>
+    <div class="noise-overlay"></div>
 
-    <div class="menu-container">
+    <h1>Selecciona mapa</h1>
 
-        <h1>
-            SELECCIONA MAPA
-        </h1>
+    <div class="cards-container">
 
         <button class="map-btn" data-map="1">
-            DÍA
+            <div class="map-preview-placeholder map-dia">☀️</div>
+            <div class="map-info">
+                <div class="map-name">Día</div>
+                <div class="map-desc">Pista abierta bajo el sol</div>
+            </div>
         </button>
 
         <button class="map-btn" data-map="2">
-            ARCOÍRIS
+            <div class="map-preview-placeholder map-arco">🌈</div>
+            <div class="map-info">
+                <div class="map-name">Arcoíris</div>
+                <div class="map-desc">Colores que desafían la velocidad</div>
+            </div>
         </button>
 
         <button class="map-btn" data-map="3">
-            ROJO
+            <div class="map-preview-placeholder map-rojo">🔥</div>
+            <div class="map-info">
+                <div class="map-name">Rojo</div>
+                <div class="map-desc">Pista de fuego, solo para los mejores</div>
+            </div>
         </button>
 
     </div>
 
-    <script
-        type="module"
-        src="/public/js/menus/SelectMap.js"
-    ></script>
+    <button class="back-btn" onclick="window.location.href='/select-mode'">← Volver</button>
 
+    <script type="module" src="/public/js/menus/SelectMap.js"></script>
 </body>
 </html>

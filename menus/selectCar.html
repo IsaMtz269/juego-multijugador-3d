@@ -1,48 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <title>
-        Seleccionar carro
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="/public/css/menu.css"
-    >
-
+    <title>Seleccionar carro</title>
+    <link rel="stylesheet" href="/menus/css/selectCar.css">
 </head>
-
 <body>
 
+    <div class="noise-overlay"></div>
+
+    <h1>Selecciona carro</h1>
+
     <div class="menu-container">
+        <div class="cars-row">
 
-        <h1>
-            SELECCIONA CARRO
-        </h1>
+            <button id="sport-btn" class="car-btn">
+                <div class="car-icon">🏎️</div>
+                <div class="car-name">Sport</div>
+                <div class="car-desc">Alta velocidad y manejo ágil</div>
+                <div class="car-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">VEL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:90%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">CTRL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:65%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">PESO</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:40%"></div></div>
+                    </div>
+                </div>
+            </button>
 
-        <button class="car-btn">
-            sport
-        </button>
+            <button id="muscle-btn" class="car-btn">
+                <div class="car-icon">🚗</div>
+                <div class="car-name">Muscle</div>
+                <div class="car-desc">Potencia bruta y presencia en pista</div>
+                <div class="car-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">VEL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:72%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">CTRL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:55%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">PESO</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:75%"></div></div>
+                    </div>
+                </div>
+            </button>
 
-        <button class="car-btn">
-            muscle
-        </button>
+            <button id="truck-btn" class="car-btn">
+                <div class="car-icon">🚛</div>
+                <div class="car-name">Truck</div>
+                <div class="car-desc">Resistencia extrema, difícil de detener</div>
+                <div class="car-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">VEL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:50%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">CTRL</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:45%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">PESO</span>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:95%"></div></div>
+                    </div>
+                </div>
+            </button>
 
-        <button class="car-btn">
-            truck
-        </button>
-
+        </div>
     </div>
 
-    <script
-        type="module"
-        src="/public/js/menus/SelectCar.js"
-    ></script>
+    <button class="back-btn" onclick="window.location.href='/select-mode'">← Volver</button>
+
+    <script type="module" src="/public/js/menus/SelectCar.js"></script>
 
 </body>
-
 </html>

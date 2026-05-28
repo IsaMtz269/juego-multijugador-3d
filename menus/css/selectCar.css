@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #7B0D1E;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Noise overlay (igual que selectMode) ── */
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/dark-tire.png');
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 0;
+}
+
+/* ── Título ── */
+h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-style: italic;
+    margin-bottom: 3rem;
+    -webkit-text-stroke: 2px #ff2c55;
+    text-shadow:
+        4px 4px 0 #7b0d1e,
+        8px 8px 0 #3c0919,
+        0 0 30px rgba(255, 44, 85, 0.9);
+    animation: neon-pulse 2s infinite alternate;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes neon-pulse {
+    0%   { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 20px rgba(255, 44, 85, 0.6); }
+    100% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 50px rgba(255, 44, 85, 1), 0 0 80px rgba(255, 44, 85, 0.6); }
+}
+
+/* ── Contenedor de carros ── */
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Fila de botones ── */
+.cars-row {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Card de cada carro ── */
+.car-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #BF3939;
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+/* Brillo interior al hover */
+.car-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(191,57,57,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.car-btn:hover::before { opacity: 1; }
+
+.car-btn:hover {
+    transform: translateY(-10px);
+    border-color: #ff2c55;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 44, 85, 0.4);
+    background: rgba(20, 0, 5, 0.7);
+}
+
+/* Estado activo / seleccionado */
+.car-btn.selected {
+    border-color: #ff2c55;
+    background: rgba(255, 44, 85, 0.15);
+    box-shadow:
+        0 0 20px rgba(255, 44, 85, 0.6),
+        inset 0 0 20px rgba(255, 44, 85, 0.1);
+}
+
+/* ── Ícono del carro ── */
+.car-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 44, 85, 0.5));
+    transition: transform 0.3s ease;
+}
+
+.car-btn:hover .car-icon {
+    transform: scale(1.15) rotate(-3deg);
+}
+
+/* ── Nombre del carro ── */
+.car-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+/* ── Descripción corta ── */
+.car-desc {
+    font-size: 0.72rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+/* ── Stats bar (velocidad / control) ── */
+.car-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+}
+
+.stat-label {
+    width: 58px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.stat-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #BF3939, #ff2c55);
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(255, 44, 85, 0.6);
+    transition: width 0.6s ease;
+}
+
+/* ── Botón volver ── */
+.back-btn {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    z-index: 2;
+}
+
+.back-btn:hover {
+    border-color: #ff2c55;
+    color: white;
+}

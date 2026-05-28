@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
-
-    <title>
-        Seleccionar modo
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="/public/css/menu.css"
-    >
-
+    <title>Seleccionar modo</title>
+    <link rel="stylesheet" href="/menus/css/selectMode.css">
 </head>
-
 <body>
+    <div class="noise-overlay"></div>
 
-    <div class="menu-container">
+    <h1>Selecciona modo</h1>
 
-        <h1>
-            SELECCIONA MODO
-        </h1>
-
-        <button id="single-btn">
-            SINGLEPLAYER
+    <div class="cards-container">
+        <button id="single-btn" class="mode-card">
+            <div class="card-icon">🏎️</div>
+            <div class="card-title">Singleplayer</div>
+            <div class="card-desc">Compite solo contra el tiempo y la pista</div>
         </button>
 
-        <button id="multi-btn">
-            MULTIPLAYER
+        <button id="multi-btn" class="mode-card">
+            <div class="card-icon">👥</div>
+            <div class="card-title">Multiplayer</div>
+            <div class="card-desc">Reta a otros jugadores en tiempo real</div>
         </button>
-
     </div>
 
-    <script
-        type="module"
-        src="/public/js/menus/SelectMode.js"
-    ></script>
+    <button class="back-btn" onclick="window.location.href='/menu'">← Volver</button>
 
+    <script type="module" src="/public/js/menus/SelectMode.js"></script>
 </body>
 </html>
