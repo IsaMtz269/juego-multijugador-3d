@@ -31,6 +31,8 @@ export default class Game{
                 "game-container"
             );
 
+        this.debugCoords = document.getElementById("debug-coords");
+
         this.sceneManager =
             new SceneManager(
                 this.container
@@ -97,15 +99,34 @@ export default class Game{
     }
 
     async loadMap(mapName){
+        try {
+            let escala = 5; 
 
-        const map =
-            await loadModel(
-                mapName,
-                5
-            );
+            if (mapName === "3") {
+                escala = 80; 
+            } 
 
-        this.sceneManager.scene.add(map);
+            else if (mapName === "1") {
+                escala = 6; 
+            }
+           
 
+            // 3. Cargamos los modelos usando la variable 'escala'
+            const escenarioFondo = await loadModel(`escenario${mapName}`, escala);
+            escenarioFondo.position.set(0, 0, 0);
+            this.sceneManager.scene.add(escenarioFondo);
+            console.log(`✅ Fondo escenario${mapName} cargado con escala ${escala}`);
+
+            const pistaJuego = await loadModel(`pista${mapName}`, escala);
+            pistaJuego.position.set(0, 0, 0);
+            this.sceneManager.scene.add(pistaJuego);
+            console.log(`✅ Pista pista${mapName} cargada con escala ${escala}`);
+
+            this.pistaActual = pistaJuego; 
+
+        } catch (error) {
+            console.error("❌ Error al cargar los modelos del nivel:", error);
+        }
     }
 
     createObstacles(){
@@ -186,6 +207,11 @@ export default class Game{
         this.player.update(
             this.input.keys
         );
+
+        if (this.debugCoords && this.player && this.player.mesh) {
+            const pos = this.player.mesh.position;
+            this.debugCoords.innerText = `X: ${pos.x.toFixed(2)} | Y: ${pos.y.toFixed(2)} | Z: ${pos.z.toFixed(2)}`;
+        }
 
         this.checkCollisions();
         
