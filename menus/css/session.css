@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: #7B0D1E;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    overflow: hidden;
+}
+
+/* ── Noise overlay ── */
+.noise-overlay {
+    position: fixed;
+    inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/dark-tire.png');
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 0;
+}
+
+/* ── Card principal ── */
+.session-wrapper {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.45);
+    border: 2px solid #BF3939;
+    border-radius: 16px;
+    padding: 3rem 3rem 2.5rem;
+    width: min(420px, 92vw);
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    box-shadow: 0 0 40px rgba(255, 44, 85, 0.2);
+}
+
+/* ── Título ── */
+.game-title {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(2rem, 8vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-style: italic;
+    text-align: center;
+    -webkit-text-stroke: 2px #ff2c55;
+    text-shadow:
+        4px 4px 0 #7b0d1e,
+        8px 8px 0 #3c0919,
+        0 0 30px rgba(255, 44, 85, 0.9);
+    animation: neon-pulse 2s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0%   { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 20px rgba(255,44,85,0.6); }
+    100% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 50px rgba(255,44,85,1), 0 0 80px rgba(255,44,85,0.5); }
+}
+
+/* ── Tabs ── */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(191, 57, 57, 0.4);
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+}
+
+.tab-btn.active {
+    color: #ff2c55;
+    border-bottom-color: #ff2c55;
+    text-shadow: 0 0 10px rgba(255, 44, 85, 0.6);
+}
+
+.tab-btn:hover:not(.active) {
+    color: rgba(255,255,255,0.75);
+}
+
+/* ── Panel de formulario ── */
+.form-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-panel.hidden { display: none; }
+
+/* ── Input group ── */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.input-group label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+}
+
+.input-group input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1.5px solid rgba(191, 57, 57, 0.5);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input::placeholder {
+    color: rgba(255,255,255,0.25);
+}
+
+.input-group input:focus {
+    border-color: #ff2c55;
+    box-shadow: 0 0 12px rgba(255, 44, 85, 0.3);
+}
+
+/* ── Botón primario ── */
+.primary-btn {
+    margin-top: 0.4rem;
+    background: linear-gradient(135deg, #BF3939, #ff2c55);
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 15px rgba(255, 44, 85, 0.3);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 44, 85, 0.5);
+    filter: brightness(1.1);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+/* ── Mensajes de error / éxito ── */
+.msg {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-align: center;
+    min-height: 1rem;
+}
+
+.msg.error   { color: #ff6b6b; }
+.msg.success { color: #6bffb8; }

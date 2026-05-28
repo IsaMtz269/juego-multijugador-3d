@@ -1,53 +1,129 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Game</title>
+    <title>Neon Drift – Acceso</title>
 
-    <link rel="stylesheet" href="/public/css/styles.css">
-
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@v0.155.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@v0.155.0/examples/jsm/"
-        }
-    }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/menus/css/session.css">
 </head>
-
 <body>
 
-    <div id="menu-ui">
+    <div class="noise-overlay"></div>
 
-        <input
-            id="playerName"
-            type="text"
-            placeholder="Nombre del jugador"
-        >
+    <div class="session-wrapper">
 
-        <select id="mapSelector">
-            <option value="1">Escenario 1 (Día)</option>
-            <option value="2">Escenario 2 (Arcoíris)</option>
-            <option value="3">Escenario 3 (Rojo)</option>
-        </select>
+        <!-- Título -->
+        <h1 class="game-title">NEON DRIFT</h1>
 
-        <button id="startButton">
-            Iniciar Juego
-        </button>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
+            <button class="tab-btn"        id="tab-register" onclick="switchTab('register')">Registrarse</button>
+        </div>
+
+        <!-- Formulario LOGIN -->
+        <div class="form-panel" id="panel-login">
+            <div class="input-group">
+                <label>Nombre</label>
+                <input type="text" id="login-name" placeholder="Tu nombre de piloto" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="login-pass" placeholder="••••••••">
+            </div>
+            <p class="msg" id="login-msg"></p>
+            <button class="primary-btn" onclick="login()">ENTRAR</button>
+        </div>
+
+        <!-- Formulario REGISTRO -->
+        <div class="form-panel hidden" id="panel-register">
+            <div class="input-group">
+                <label>Nombre</label>
+                <input type="text" id="reg-name" placeholder="Elige tu nombre de piloto" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="reg-pass" placeholder="••••••••">
+            </div>
+            <div class="input-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" id="reg-pass2" placeholder="••••••••">
+            </div>
+            <p class="msg" id="reg-msg"></p>
+            <button class="primary-btn" onclick="register()">REGISTRARSE</button>
+        </div>
 
     </div>
 
-    <div id="game-container"></div>
+    <script>
+        /* ── Cambiar entre tabs ── */
+        function switchTab(tab) {
+            document.getElementById('panel-login').classList.toggle('hidden', tab !== 'login');
+            document.getElementById('panel-register').classList.toggle('hidden', tab !== 'register');
+            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+        }
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+        /* ── Login ── */
+        async function login() {
+            const name = document.getElementById('login-name').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            const msg  = document.getElementById('login-msg');
 
-    <script type="module" src="/public/js/main.js"></script>
+            if (!name || !pass) { msg.textContent = 'Completa todos los campos.'; msg.className = 'msg error'; return; }
+
+            const res  = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, password: pass })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem('playerName', data.name);
+                window.location.href = '/menu';
+            } else {
+                msg.textContent = data.error;
+                msg.className = 'msg error';
+            }
+        }
+
+        /* ── Registro ── */
+        async function register() {
+            const name  = document.getElementById('reg-name').value.trim();
+            const pass  = document.getElementById('reg-pass').value;
+            const pass2 = document.getElementById('reg-pass2').value;
+            const msg   = document.getElementById('reg-msg');
+
+            if (!name || !pass || !pass2) { msg.textContent = 'Completa todos los campos.'; msg.className = 'msg error'; return; }
+            if (pass !== pass2)           { msg.textContent = 'Las contraseñas no coinciden.'; msg.className = 'msg error'; return; }
+
+            const res  = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, password: pass })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                msg.textContent = '¡Registro exitoso! Inicia sesión.';
+                msg.className = 'msg success';
+                setTimeout(() => switchTab('login'), 1200);
+            } else {
+                msg.textContent = data.error;
+                msg.className = 'msg error';
+            }
+        }
+
+        /* ── Enter para submit ── */
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter') return;
+            const loginHidden = document.getElementById('panel-login').classList.contains('hidden');
+            loginHidden ? register() : login();
+        });
+    </script>
 
 </body>
 </html>
-```
