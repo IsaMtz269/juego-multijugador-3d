@@ -1,65 +1,65 @@
 import * as THREE from 'three';
-
 import CollisionSystem from './CollisionSystem.js';
 
 export default class RaceSystem{
 
-    constructor(scene, player){
+    constructor(scene, player, mapName){
 
         this.scene = scene;
-
         this.player = player;
-
+        this.mapName = mapName;
         this.laps = 0;
 
-        this.maxLaps = 3;
+        if (this.mapName === "1") {
+            this.maxLaps = 3;
+        } else if (this.mapName === "2") {
+            this.maxLaps = 2;
+        } else if (this.mapName === "3") {
+            this.maxLaps = 1;
+        } else {
+            this.maxLaps = 3; 
+        }
 
         this.finished = false;
-
-        this.time = 60;
+        
+        // Coloca aquí los segundos que decidiste para tu cronómetro
+        this.time = 300; 
 
         this.paused = false;
-
         this.audio = player.audio;
 
+        // NUEVAS VARIABLES PARA CONTROLAR LA SALIDA
+        this.esSalida = true; 
+        this.cooldown = false;
+
         this.createFinishLine();
-
         this.createUI();
-
         this.startTimer();
-
     }
 
     createFinishLine(){
 
-        const geometry =
-            new THREE.BoxGeometry(
-                5,
-                1,
-                1
-            );
+        const geometry = new THREE.BoxGeometry(15, 1, 1);
+        const material = new THREE.MeshStandardMaterial({
+            color:0xffff00
+        });
 
-        const material =
-            new THREE.MeshStandardMaterial({
-                color:0xffff00
-            });
+        this.finishLine = new THREE.Mesh(geometry, material);
 
-        this.finishLine =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
+        if (this.mapName === "1") {
+            this.finishLine.position.set(-47, 0.75, 63.50); 
+        } else if (this.mapName === "2") {
+            this.finishLine.position.set(10, 1, -58.25); 
+        } else if (this.mapName === "3") {
+            this.finishLine.position.set(32.75, -37.79, -3.00); 
+        } else {
+            this.finishLine.position.set(0, 1, -20);
+        }
 
-        this.finishLine.position.set(
-            0,
-            1,
-            -20
-        );
+        // NUEVO: Hacemos que la línea de meta sea invisible
+        this.finishLine.visible = false; 
 
-        this.scene.add(
-            this.finishLine
-        );
-
+        this.scene.add(this.finishLine);
     }
 
     createUI(){
@@ -177,26 +177,27 @@ export default class RaceSystem{
 
         if(this.cooldown) return;
 
+        // Bloqueamos colisiones temporalmente
         this.cooldown = true;
 
-        this.laps++;
+        // NUEVA LÓGICA DE SALIDA
+        if (this.esSalida) {
+            console.log("¡Arranca la carrera!");
+            this.esSalida = false; // El próximo choque ya será la vuelta 1
+        } else {
+            // Solo sumamos vuelta si NO es la salida
+            this.laps++;
+            console.log("Vuelta completada:", this.laps);
 
-        console.log(
-            "Vuelta completada:",
-            this.laps
-        );
-
-        if(this.laps >= this.maxLaps){
-
-            this.win();
-
+            if(this.laps >= this.maxLaps){
+                this.win();
+            }
         }
 
+        // 10000 milisegundos (10 segundos) de cooldown para evitar trampas
         setTimeout(()=>{
-
             this.cooldown = false;
-
-        },2000);
+        }, 10000); 
 
     }
 

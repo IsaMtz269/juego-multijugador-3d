@@ -18,27 +18,27 @@ export default class ItemSystem {
         
         if (this.mapName === "1") {
             // Posiciones para el Escenario 1 (Día)
-            this.items.push(new Item(this.scene, "speed", 5, 1, 5));
-            this.items.push(new Item(this.scene, "life", -10, 1, -10));
-            this.items.push(new Item(this.scene, "ghost", 15, 1, -5));
-            this.items.push(new Item(this.scene, "time", 12.50, 4, 1.75));
+            this.items.push(new Item(this.scene, "speed", 57.75, 22.68, -14.75));
+            this.items.push(new Item(this.scene, "life", -21.25, 1.10, 17.25));
+            this.items.push(new Item(this.scene, "ghost", 36.25, 16.48, 64.75));
+            this.items.push(new Item(this.scene, "time", 25.59, 10.73, -3.25));
             console.log("Ítems generados para el Mapa 1");
 
         } else if (this.mapName === "2") {
             // Posiciones para el Escenario 2 (Arcoíris)
-            // (Cambia estos números X, Y, Z usando tu recuadro flotante de debug)
-            this.items.push(new Item(this.scene, "speed", 20, 1, 20));
-            this.items.push(new Item(this.scene, "life", -20, 1, -20));
-            this.items.push(new Item(this.scene, "ghost", 25, 1, -15));
-            this.items.push(new Item(this.scene, "time", -25, 1, 18));
+            //82.25, -5.75, 12.50
+            this.items.push(new Item(this.scene, "speed", 190.25, 9.62, -117.00));
+            this.items.push(new Item(this.scene, "life", 128.25, 19.82, -71.25));
+            this.items.push(new Item(this.scene, "ghost", 78.50, 12.64, -148.50));
+            this.items.push(new Item(this.scene, "time", 82.25, -5.75, 12.50));
             console.log("Ítems generados para el Mapa 2");
 
         } else if (this.mapName === "3") {
             // Posiciones para el Escenario 3 (Rojo)
-            this.items.push(new Item(this.scene, "speed", 12, 1, -30));
-            this.items.push(new Item(this.scene, "life", -12, 1, 30));
-            this.items.push(new Item(this.scene, "ghost", 8, 1, -10));
-            this.items.push(new Item(this.scene, "time", -8, 1, 20));
+            this.items.push(new Item(this.scene, "speed", -23.50, -38.93, -206.50));
+            this.items.push(new Item(this.scene, "life", 226.00, -9.52, -138.25));
+            this.items.push(new Item(this.scene, "ghost", 112.00, -28.54, 99.25));
+            this.items.push(new Item(this.scene, "time", 199.00, -27.72, -427.00));
             console.log("Ítems generados para el Mapa 3");
             
         } else {

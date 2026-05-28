@@ -44,7 +44,7 @@ export default class Player{
         } else if (this.mapName === "3") {
             // Posición para el Escenario 3 (Rojo)
             // (Ajusta estos números usando tu herramienta de coordenadas)
-            cube.position.set(0, 1, 0); 
+            cube.position.set(32.75, -37.96, 2.50); 
 
         } else {
             // Posición por defecto
