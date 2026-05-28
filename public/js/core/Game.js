@@ -72,7 +72,8 @@ export default class Game{
             this.itemSystem = 
             new ItemSystem
             ( this.sceneManager.scene,
-                 this.player 
+                 this.player,
+                 mapName 
             );
 
             this.itemSystem.raceSystem = 
