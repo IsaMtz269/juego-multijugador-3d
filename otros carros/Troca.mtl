@@ -1,0 +1,35 @@
+# Blender 3.6.2 MTL File: 'None'
+# www.blender.org
+
+newmtl material_0.001
+Ns 9.803922
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd Troca.png
+map_Ks TX_Eng_ChloePickupExt_S.png
+map_Bump TX_Eng_ChloePickupExt_N.png
+
+newmtl material_1
+Ns 9.803922
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd TX_Eng_ChloePickupInt_D.png
+map_Ks TX_Eng_ChloePickupInt_S.png
+map_Bump TX_Eng_ChloePickupInt_N.png
+
+newmtl material_2
+Ns 9.803922
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 1
+map_Kd TX_Eng_ChloePickupExt_D.png
+map_Ks TX_Eng_ChloePickupExt_S.png
+map_d TX_Eng_ChloePickupExt_alpha.png
+map_Bump TX_Eng_ChloePickupExt_N.png

@@ -1,0 +1,36 @@
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:Arial;
+    background:black;
+}
+
+#game-container{
+    width:100vw;
+    height:100vh;
+}
+
+#menu-ui{
+    position:absolute;
+    z-index:10;
+
+    top:20px;
+    left:20px;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+    background:rgba(0,0,0,0.7);
+
+    padding:20px;
+
+    border-radius:10px;
+}
+
+input,
+select,
+button{
+    padding:10px;
+    font-size:16px;
+}
