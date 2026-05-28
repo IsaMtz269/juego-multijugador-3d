@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap');
+
+body {
+    background-color: #7B0D1E;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-style: italic;
+    margin-bottom: 3rem;
+    -webkit-text-stroke: 2px #ff2c55;
+    text-shadow:
+        4px 4px 0 #7b0d1e,
+        8px 8px 0 #3c0919,
+        0 0 30px rgba(255, 44, 85, 0.9);
+    animation: neon-pulse 2s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 20px rgba(255, 44, 85, 0.6); }
+    100% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 50px rgba(255, 44, 85, 1), 0 0 80px rgba(255, 44, 85, 0.6); }
+}
+
+.cards-container {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #BF3939;
+    border-radius: 12px;
+    width: 260px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-btn:hover {
+    transform: translateY(-10px);
+    border-color: #ff2c55;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255, 44, 85, 0.4);
+}
+
+.map-preview {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px 10px 0 0;
+    filter: brightness(0.85);
+    transition: filter 0.3s;
+}
+
+.map-btn:hover .map-preview {
+    filter: brightness(1.1);
+}
+
+/* Fallback si no hay imagen */
+.map-preview-placeholder {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    border-radius: 10px 10px 0 0;
+}
+
+.map-dia    { background: linear-gradient(135deg, #87CEEB, #FDB97D); }
+.map-arco   { background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3); }
+.map-rojo   { background: linear-gradient(135deg, #3c0919, #7b0d1e, #BF3939); }
+
+.map-info {
+    padding: 1.2rem 1rem;
+    text-align: center;
+}
+
+.map-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 0.4rem;
+}
+
+.map-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    line-height: 1.4;
+}
+
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/dark-tire.png');
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.back-btn {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.6);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    border-color: #ff2c55;
+    color: white;
+}

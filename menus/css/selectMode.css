@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap');
+
+body {
+    background-color: #7B0D1E;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-style: italic;
+    margin-bottom: 3rem;
+    -webkit-text-stroke: 2px #ff2c55;
+    text-shadow:
+        4px 4px 0 #7b0d1e,
+        8px 8px 0 #3c0919,
+        0 0 30px rgba(255, 44, 85, 0.9);
+    animation: neon-pulse 2s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 20px rgba(255, 44, 85, 0.6); }
+    100% { text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 0 0 50px rgba(255, 44, 85, 1), 0 0 80px rgba(255, 44, 85, 0.6); }
+}
+
+.cards-container {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.mode-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #BF3939;
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(191,57,57,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.mode-card:hover::before { opacity: 1; }
+
+.mode-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff2c55;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255, 44, 85, 0.4);
+    background: rgba(20, 0, 5, 0.7);
+}
+
+.card-icon {
+    font-size: 4rem;
+}
+
+.card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/dark-tire.png');
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.back-btn {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.6);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    border-color: #ff2c55;
+    color: white;
+}
