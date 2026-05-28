@@ -21,7 +21,7 @@ export default class ItemSystem {
             this.items.push(new Item(this.scene, "speed", 5, 1, 5));
             this.items.push(new Item(this.scene, "life", -10, 1, -10));
             this.items.push(new Item(this.scene, "ghost", 15, 1, -5));
-            this.items.push(new Item(this.scene, "time", -15, 1, 8));
+            this.items.push(new Item(this.scene, "time", 12.50, 4, 1.75));
             console.log("Ítems generados para el Mapa 1");
 
         } else if (this.mapName === "2") {

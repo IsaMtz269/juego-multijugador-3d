@@ -2,49 +2,58 @@ import * as THREE from 'three';
 
 export default class Player{
 
-    constructor(scene){
+    // 1. Agregamos mapName al constructor
+    constructor(scene, mapName){
 
         this.scene = scene;
+        this.mapName = mapName; // Guardamos el nombre del mapa
 
         this.speed = 0.25;
-
         this.gravity = 0.01;
-
         this.velocityY = 0;
-
         this.life = 100;
-
         this.canMove = true;
-
         this.isGhost = false;
 
-        this.mesh = this.createPlayer();
+        this.floorY = 1;
 
+        this.mesh = this.createPlayer();
         this.scene.add(this.mesh);
 
     }
 
     createPlayer(){
 
-        const geometry =
-            new THREE.BoxGeometry(1,1,1);
+        const geometry = new THREE.BoxGeometry(1,1,1);
+        const material = new THREE.MeshStandardMaterial({
+            color:0x0000ff
+        });
 
-        const material =
-            new THREE.MeshStandardMaterial({
-                color:0x0000ff
-            });
+        const cube = new THREE.Mesh(geometry, material);
 
-        const cube =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
+        // 2. Definimos las posiciones de spawn según el mapa
+        if (this.mapName === "1") {
+            // Posición para el Escenario 1 (Día)
+            cube.position.set(-47, 1, 70.25); 
 
-        cube.position.set(-12,6.4,14);
+        } else if (this.mapName === "2") {
+            // Posición para el Escenario 2 (Arcoíris)
+            // (Ajusta estos números usando tu herramienta de coordenadas)
+            cube.position.set(8.50, 1, -57.50); 
+
+        } else if (this.mapName === "3") {
+            // Posición para el Escenario 3 (Rojo)
+            // (Ajusta estos números usando tu herramienta de coordenadas)
+            cube.position.set(0, 1, 0); 
+
+        } else {
+            // Posición por defecto
+            cube.position.set(-12, 6.4, 14);
+        }
 
         return cube;
-
     }
+
 
     update(input){
 
@@ -87,13 +96,12 @@ export default class Player{
     applyGravity(){
 
         this.velocityY -= this.gravity;
-
         this.mesh.position.y += this.velocityY;
 
-        if(this.mesh.position.y <= 1){
+        // Ahora choca contra "this.floorY" en vez del "1" fijo
+        if(this.mesh.position.y <= this.floorY){
 
-            this.mesh.position.y = 1;
-
+            this.mesh.position.y = this.floorY;
             this.velocityY = 0;
 
         }

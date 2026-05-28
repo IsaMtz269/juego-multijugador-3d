@@ -43,7 +43,8 @@ export default class Game{
 
         this.player =
             new Player(
-                this.sceneManager.scene
+                this.sceneManager.scene,
+                mapName // <--- Pasamos el nombre del mapa aquí
             );
 
         this.player.onDeath =()=>{
@@ -104,15 +105,18 @@ export default class Game{
             let escala = 5; 
 
             if (mapName === "3") {
-                escala = 80; 
+                escala = 60; 
+            } 
+
+            if (mapName === "2") {
+                escala = 18; 
             } 
 
             else if (mapName === "1") {
-                escala = 6; 
+                escala = 12; 
             }
            
 
-            // 3. Cargamos los modelos usando la variable 'escala'
             const escenarioFondo = await loadModel(`escenario${mapName}`, escala);
             escenarioFondo.position.set(0, 0, 0);
             this.sceneManager.scene.add(escenarioFondo);
@@ -124,6 +128,8 @@ export default class Game{
             console.log(`✅ Pista pista${mapName} cargada con escala ${escala}`);
 
             this.pistaActual = pistaJuego; 
+            this.currentMap = mapName;         
+            this.escenarioActual = escenarioFondo; 
 
         } catch (error) {
             console.error("❌ Error al cargar los modelos del nivel:", error);
@@ -166,8 +172,8 @@ export default class Game{
 
     checkCollisions(){
 
+        // 1. Colisiones con Enemigos/Obstáculos (Causan daño)
         for(let enemy of this.enemies){
-
             const collision =
                 CollisionSystem.checkCollision(
                     this.player.mesh,
@@ -176,11 +182,59 @@ export default class Game{
                 if(collision){
                     if(!this.player.isGhost){
                         this.player.revertPosition();
-                        this.player.takeDamage(1);}
+                        this.player.takeDamage(1);
                         this.audio.playCrash();
                     }
                 }
+        }
+
+        // 2. Colisión con la Pista y/o Escenario
+        let modelosAColisionar = [];
+        if (this.pistaActual) modelosAColisionar.push(this.pistaActual);
+        
+        // Si es el mapa 3, le agregamos la física también al escenario
+        if (this.currentMap === "3" && this.escenarioActual) {
+            modelosAColisionar.push(this.escenarioActual);
+        }
+
+        let alturaPisoFinal = null;
+
+        // Revisamos cada modelo de la lista
+        for (let modelo of modelosAColisionar) {
+            
+            // A. Checar paredes
+            const hitWall = CollisionSystem.checkTrackCollision(this.player.mesh, modelo);
+            if (hitWall) {
+                this.player.revertPosition();
+            }
+
+            // B. Checar piso
+            const floorHeight = CollisionSystem.getFloorY(this.player.mesh, modelo);
+            
+            // Si detectó piso en este modelo, guardamos el que esté más alto
+            if (floorHeight !== null) {
+                if (alturaPisoFinal === null || floorHeight > alturaPisoFinal) {
+                    alturaPisoFinal = floorHeight;
+                }
+            }
+        }
+
+        // Si encontramos un piso válido debajo del carro
+        if (alturaPisoFinal !== null) {
+            this.player.floorY = alturaPisoFinal + 0.5;
+
+            // Lo subimos a la rampa si quedó enterrado
+            if (this.player.mesh.position.y < this.player.floorY) {
+                this.player.mesh.position.y = this.player.floorY;
+                this.player.velocityY = 0;
+            }
+        } else {
+            // Si el jugador se sale por completo del mapa (no hay piso), 
+            // le ponemos un límite bajo para que caiga por gravedad
+            this.player.floorY = -50; 
+        }
     }
+    
 
     addEvents(){
         document.addEventListener(
