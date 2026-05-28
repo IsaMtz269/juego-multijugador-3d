@@ -1,0 +1,124 @@
+
+body {
+    background-color: #7B0D1E; 
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif; 
+    color: white;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    padding-top: 20px;
+}
+
+
+.header-container {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.game-title {
+    font-family: 'Russo One', sans-serif; 
+    font-size: clamp(4rem, 8vw, 7rem); 
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    font-style: italic;
+
+    -webkit-text-stroke: 2px #ff2c55;
+    text-shadow:
+        4px 4px 0 #7b0d1e,
+        8px 8px 0 #3c0919,
+        12px 12px 0 #151515,
+        0 0 20px rgba(255, 44, 85, 0.8),
+        15px 15px 20px rgba(0,0,0,0.6);
+  
+    animation: neon-pulse 2s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0% { 
+        text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 12px 12px 0 #151515, 0 0 20px rgba(255, 44, 85, 0.6), 15px 15px 20px rgba(0,0,0,0.6); 
+    }
+    100% { 
+        text-shadow: 4px 4px 0 #7b0d1e, 8px 8px 0 #3c0919, 12px 12px 0 #151515, 0 0 45px rgba(255, 44, 85, 1), 0 0 65px rgba(255, 44, 85, 0.8), 15px 15px 20px rgba(0,0,0,0.6); 
+    }
+}
+
+
+.tire-container {
+    position: absolute;
+    top: -35%;  
+    left: -25%; 
+    width: 110vw; 
+    height: 110vw;
+    max-width: 1400px;
+    max-height: 1400px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.8; 
+}
+
+.tire-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: spin 20s linear infinite; 
+    filter: drop-shadow(20px 20px 40px rgba(0,0,0,0.7)); 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.noise-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/dark-tire.png');
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+
+.menu-wrapper {
+    position: relative;
+    z-index: 5; 
+    height: 100%; 
+    padding-top: 100px; 
+}
+
+.menu-btn {
+    background: transparent; 
+    border: 2px solid transparent; 
+    color: #f8f9fa;
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+.menu-btn:hover {
+    background-color: #151515; 
+    color: #BF3939; 
+    transform: translateY(-5px);
+    border-bottom: 8px solid #691414; 
+    text-shadow: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.5s; }
+.delay-3 { animation-delay: 0.7s; }
+.delay-4 { animation-delay: 0.9s; }

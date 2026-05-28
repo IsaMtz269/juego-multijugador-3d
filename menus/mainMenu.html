@@ -1,49 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Proyecto Game</title>
-
-    <link
-        rel="stylesheet"
-        href="/public/css/menu.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal Futurista - Ruby Road</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/menus/css/m_inicial.css">
 </head>
-
 <body>
+    <div class="noise-overlay"></div>
 
-    <div class="menu-container">
-
-        <h1>
-            PROYECTO GAME
-        </h1>
-
-        <button id="play-btn">
-            JUGAR
-        </button>
-
-        <button id="settings-btn">
-            CONFIGURACIÓN
-        </button>
-
-        <button id="exit-btn">
-            SALIR
-        </button>
-
+    <div class="header-container d-flex justify-content-center animate__animated animate__fadeInDown">
+        <h1 class="game-title">NEON DRIFT</h1>
     </div>
 
-    <script
-        type="module"
-        src="/public/js/menus/MainMenu.js"
-    ></script>
+    <div class="tire-container animate__animated animate__fadeIn animate__slower">
+        <img src="menus/imagenes/llanta.png" alt="Llanta girando" class="tire-img">
+    </div>
 
+    <div class="container-fluid menu-wrapper d-flex align-items-center justify-content-end pe-5 pb-5">
+        <div class="d-flex flex-column align-items-end me-4">
+            <button id="play-btn" class="menu-btn animate__animated animate__fadeInRight delay-1">Jugar</button>
+            <button class="menu-btn animate__animated animate__fadeInRight delay-2">Multijugador</button>
+            <button id="settings-btn" class="menu-btn animate__animated animate__fadeInRight delay-3">Configuración</button>
+            <button id="exit-btn" class="menu-btn animate__animated animate__fadeInRight delay-4">Salir</button>
+        </div>
+    </div>
+
+    <script type="module" src="/public/js/menus/MainMenu.js"></script>
 </body>
 </html>
