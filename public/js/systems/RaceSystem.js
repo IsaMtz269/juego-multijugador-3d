@@ -208,15 +208,16 @@ export default class RaceSystem{
     }
 
     win(){
-
         this.finished = true;
-
         clearInterval(this.interval);
-
-        this.player.audio.playWin();
-
-        alert("GANASTE LA CARRERA");
-
+        
+        // 1. Calculamos los puntos base (Vida sobrante + Tiempo sobrante)
+        const puntosBase = this.player.life + this.time;
+        
+        // 2. Disparamos un evento para que Game.js maneje la Base de Datos
+        if (this.onWin) {
+            this.onWin(puntosBase);
+        }
     }
 
     gameOver(){

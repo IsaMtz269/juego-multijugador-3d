@@ -83,6 +83,7 @@
 
             if (res.ok) {
                 localStorage.setItem('playerName', data.name);
+                localStorage.setItem('playerId', data.id);
                 window.location.href = '/menu';
             } else {
                 msg.textContent = data.error;
@@ -116,6 +117,8 @@
                 msg.className = 'msg error';
             }
         }
+
+        
 
         /* ── Enter para submit ── */
         document.addEventListener('keydown', (e) => {

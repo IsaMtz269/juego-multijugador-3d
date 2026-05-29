@@ -4,7 +4,6 @@ import { loadModel } from '../utils/Loader.js';
 export default class Player {
 
     constructor(scene, mapName) {
-
         this.scene   = scene;
         this.mapName = mapName;
 
@@ -26,7 +25,7 @@ export default class Player {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshStandardMaterial({
             color: 0x0000ff,
-            visible: false
+            visible: false // Hacemos invisible tu cubo base para que solo se vea el carro
         });
         const cube = new THREE.Mesh(geometry, material);
         cube.position.copy(this.getSpawnPosition());
@@ -35,18 +34,17 @@ export default class Player {
 
     getSpawnPosition() {
         if (this.mapName === "1") {
-            return new THREE.Vector3(-47, 1, 70.25);
+            return new THREE.Vector3(-47, 5, 70.25);
         } else if (this.mapName === "2") {
-            return new THREE.Vector3(8.50, 1, -57.50);
+            return new THREE.Vector3(8.50, 5, -57.50);
         } else if (this.mapName === "3") {
-            return new THREE.Vector3(32.75, -37.96, 2.50);
+            return new THREE.Vector3(32.75, -35.00, 2.50);
         } else {
             return new THREE.Vector3(-12, 6.4, 14);
         }
     }
 
     async loadCarModel() {
-
         const selectedCar = localStorage.getItem('selectedCar') || 'AutoFin';
 
         const scales = {
@@ -60,8 +58,6 @@ export default class Player {
             'carroazul': 0,
             'Troca':     0
         };
-
-       
 
         try {
             const scale = scales[selectedCar] || 0.5;
@@ -78,12 +74,11 @@ export default class Player {
 
         } catch (error) {
             this.mesh.material.visible = true;
-            console.warn('⚠️ No se pudo cargar el modelo, usando cubo:', error);
+            console.warn('⚠️ No se pudo cargar el modelo, usando cubo azul:', error);
         }
     }
 
     update(input) {
-
         if (!this.canMove) return;
 
         const previousPosition = this.mesh.position.clone();

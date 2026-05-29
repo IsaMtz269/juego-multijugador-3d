@@ -18,8 +18,8 @@ export default class ItemSystem {
         
         if (this.mapName === "1") {
             // Posiciones para el Escenario 1 (Día)
-            this.items.push(new Item(this.scene, "speed", 57.75, 22.68, -14.75));
-            this.items.push(new Item(this.scene, "life", -21.25, 1.10, 17.25));
+            this.items.push(new Item(this.scene, "speed", -19.75, 18.32, -88.25));
+            this.items.push(new Item(this.scene, "life", 68.00, 23.09, -78.75));
             this.items.push(new Item(this.scene, "ghost", 36.25, 16.48, 64.75));
             this.items.push(new Item(this.scene, "time", 25.59, 10.73, -3.25));
             console.log("Ítems generados para el Mapa 1");
@@ -30,7 +30,7 @@ export default class ItemSystem {
             this.items.push(new Item(this.scene, "speed", 190.25, 9.62, -117.00));
             this.items.push(new Item(this.scene, "life", 128.25, 19.82, -71.25));
             this.items.push(new Item(this.scene, "ghost", 78.50, 12.64, -148.50));
-            this.items.push(new Item(this.scene, "time", 82.25, -5.75, 12.50));
+            this.items.push(new Item(this.scene, "speed", 82.25, -5.75, 12.50));
             console.log("Ítems generados para el Mapa 2");
 
         } else if (this.mapName === "3") {
@@ -39,6 +39,8 @@ export default class ItemSystem {
             this.items.push(new Item(this.scene, "life", 226.00, -9.52, -138.25));
             this.items.push(new Item(this.scene, "ghost", 112.00, -28.54, 99.25));
             this.items.push(new Item(this.scene, "time", 199.00, -27.72, -427.00));
+            this.items.push(new Item(this.scene, "speed", -10.75, -23.14, -482.00));
+            this.items.push(new Item(this.scene, "ghost",166.25, -28.27, 39.75));
             console.log("Ítems generados para el Mapa 3");
             
         } else {

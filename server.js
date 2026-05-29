@@ -172,6 +172,65 @@ app.get('/loading', (req, res) => {
     res.sendFile(join(__dirname, 'menus/loading.html'));
 });
 
+app.get('/historial', (req, res) => {
+    res.sendFile(join(__dirname, 'menus/historial.html'));
+});
+
+// Variable global para registrar quién cruza la meta primero en Multijugador
+let lugaresLlegada = [];
+
+/* =========================
+   SISTEMA DE PUNTAJES (API)
+========================= */
+app.post('/save-score', async (req, res) => {
+    const { playerId, puntos, esVictoria, mapa, modo } = req.body;
+
+    if (!playerId) return res.status(400).json({ error: 'Falta el ID del jugador' });
+
+    try {
+        // 1. Sumar los puntos al total del usuario
+        let queryUpdate = 'UPDATE usuarios SET puntaje_general = puntaje_general + ?';
+        let paramsUpdate = [puntos];
+
+        // Si quedó en 1er lugar, sumamos una victoria
+        if (esVictoria) {
+            queryUpdate += ', partidas_ganadas = partidas_ganadas + 1';
+        }
+        queryUpdate += ' WHERE id = ?';
+        paramsUpdate.push(playerId);
+        
+        await db.query(queryUpdate, paramsUpdate);
+
+        // 2. Guardar este registro en el Historial (puntuaciones)
+        await db.query(
+            'INSERT INTO puntuaciones (usuario_id, puntos_ganados, mapa, modo_juego) VALUES (?, ?, ?, ?)', 
+            [playerId, puntos, mapa, modo]
+        );
+
+        res.json({ success: true, message: 'Puntaje e historial guardados' });
+    } catch (error) {
+        console.error("Error al guardar puntaje:", error);
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+// NUEVO: Obtener el historial de un jugador
+app.get('/api/historial/:id', async (req, res) => {
+    const playerId = req.params.id;
+    try {
+        // 1. Obtenemos el puntaje general y victorias
+        const [user] = await db.query('SELECT puntaje_general, partidas_ganadas FROM usuarios WHERE id = ?', [playerId]);
+        
+        // 2. Obtenemos las últimas 5 carreras
+        const [history] = await db.query('SELECT * FROM puntuaciones WHERE usuario_id = ? ORDER BY fecha DESC LIMIT 5', [playerId]);
+        
+        res.json({ stats: user[0], history: history });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error obteniendo historial' });
+    }
+});
+
 /* =========================
    SOCKETS
 ========================= */
@@ -203,7 +262,48 @@ io.on('connection', (socket) => {
             }
         }
     });
+
+   // --- NUEVO ÁRBITRO DE META MULTIJUGADOR ---
+    let resultadosCarrera = [];
+
+    socket.on('LlegueALaMeta', (datosJugador) => {
+        // Guardamos al jugador si no estaba ya en la lista
+        if (!resultadosCarrera.find(j => j.nombre === datosJugador.nombre)) {
+            resultadosCarrera.push(datosJugador);
+        }
+
+        // Si es el PRIMERO en llegar, él es el GANADOR
+        if (resultadosCarrera.length === 1) {
+            
+            // 1. Le avisamos a todos los demás en la sala que la carrera terminó
+            socket.broadcast.emit('ForzarFin');
+            
+            // 2. Damos 1.5 segundos exactos para que los perdedores envíen su vida y tiempo sobrante
+            setTimeout(() => {
+                // Armamos los bonos para el ganador (índice 0)
+                if (resultadosCarrera[0]) {
+                    resultadosCarrera[0].lugar = 1;
+                    resultadosCarrera[0].puntajeTotal = resultadosCarrera[0].puntosBase + 100;
+                    resultadosCarrera[0].esVictoria = true;
+                }
+                // Armamos los bonos para el perdedor (índice 1)
+                if (resultadosCarrera[1]) {
+                    resultadosCarrera[1].lugar = 2;
+                    resultadosCarrera[1].puntajeTotal = resultadosCarrera[1].puntosBase + 50;
+                    resultadosCarrera[1].esVictoria = false;
+                }
+                
+                // 3. Enviamos la tabla final acomodada a TODOS los jugadores a la vez
+                io.emit('TablaFinal', resultadosCarrera);
+                
+                // Limpiamos la carrera en el servidor para la próxima partida
+                resultadosCarrera = []; 
+            }, 1500);
+        }
+    });
 });
+
+
 
 /* =========================
    SERVIDOR
