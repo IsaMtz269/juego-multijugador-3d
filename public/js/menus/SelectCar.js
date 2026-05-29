@@ -1,30 +1,25 @@
-import ScreenManager
-from '../core/ScreenManager.js';
+import ScreenManager from '../core/ScreenManager.js';
+import GameData from '../data/GameData.js';
 
-import GameData
-from '../data/GameData.js';
+// Mapea cada botón con su nombre de modelo .obj
+const carModels = {
+    'sport-btn':  'carroazul',
+    'muscle-btn': 'AutoFin',
+    'truck-btn':  'Troca'
+};
 
-const buttons =
-    document.querySelectorAll(
-        ".car-btn"
-    );
+const buttons = document.querySelectorAll('.car-btn');
 
-buttons.forEach(
-    (btn)=>{
+buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
 
-        btn.addEventListener(
-            "click",
-            ()=>{
+        const modelName = carModels[btn.id];
 
-                GameData.selectedCar =
-                    btn.innerText;
+        // Guardar en localStorage para que Player.js lo lea
+        localStorage.setItem('selectedCar', modelName);
 
-                ScreenManager.changeScreen(
-                    "/loading"
-                );
+        GameData.selectedCar = btn.innerText;
 
-            }
-        );
-
-    }
-);
+        ScreenManager.changeScreen('/loading');
+    });
+});

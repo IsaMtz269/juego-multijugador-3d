@@ -1,146 +1,139 @@
 import * as THREE from 'three';
+import { loadModel } from '../utils/Loader.js';
 
-export default class Player{
+export default class Player {
 
-    // 1. Agregamos mapName al constructor
-    constructor(scene, mapName){
+    constructor(scene, mapName) {
 
-        this.scene = scene;
-        this.mapName = mapName; // Guardamos el nombre del mapa
+        this.scene   = scene;
+        this.mapName = mapName;
 
-        this.speed = 0.25;
-        this.gravity = 0.01;
+        this.speed     = 0.25;
+        this.gravity   = 0.01;
         this.velocityY = 0;
-        this.life = 100;
-        this.canMove = true;
-        this.isGhost = false;
-
-        this.floorY = 1;
+        this.life      = 100;
+        this.canMove   = true;
+        this.isGhost   = false;
+        this.floorY    = 1;
 
         this.mesh = this.createPlayer();
         this.scene.add(this.mesh);
 
+        this.loadCarModel();
     }
 
-    createPlayer(){
-
-        const geometry = new THREE.BoxGeometry(1,1,1);
+    createPlayer() {
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshStandardMaterial({
-            color:0x0000ff
+            color: 0x0000ff,
+            visible: false
         });
-
         const cube = new THREE.Mesh(geometry, material);
-
-        // 2. Definimos las posiciones de spawn según el mapa
-        if (this.mapName === "1") {
-            // Posición para el Escenario 1 (Día)
-            cube.position.set(-47, 1, 70.25); 
-
-        } else if (this.mapName === "2") {
-            // Posición para el Escenario 2 (Arcoíris)
-            // (Ajusta estos números usando tu herramienta de coordenadas)
-            cube.position.set(8.50, 1, -57.50); 
-
-        } else if (this.mapName === "3") {
-            // Posición para el Escenario 3 (Rojo)
-            // (Ajusta estos números usando tu herramienta de coordenadas)
-            cube.position.set(32.75, -37.96, 2.50); 
-
-        } else {
-            // Posición por defecto
-            cube.position.set(-12, 6.4, 14);
-        }
-
+        cube.position.copy(this.getSpawnPosition());
         return cube;
     }
 
-
-    update(input){
-
-        if(!this.canMove) return;
-
-        const previousPosition =
-            this.mesh.position.clone();
-
-        if(input["w"]){
-
-            this.mesh.position.z -= this.speed;
-
+    getSpawnPosition() {
+        if (this.mapName === "1") {
+            return new THREE.Vector3(-47, 1, 70.25);
+        } else if (this.mapName === "2") {
+            return new THREE.Vector3(8.50, 1, -57.50);
+        } else if (this.mapName === "3") {
+            return new THREE.Vector3(32.75, -37.96, 2.50);
+        } else {
+            return new THREE.Vector3(-12, 6.4, 14);
         }
-
-        if(input["s"]){
-
-            this.mesh.position.z += this.speed;
-
-        }
-
-        if(input["a"]){
-
-            this.mesh.position.x -= this.speed;
-
-        }
-
-        if(input["d"]){
-
-            this.mesh.position.x += this.speed;
-
-        }
-
-        this.mesh.userData.previousPosition =
-            previousPosition;
-
-        this.applyGravity();
-
     }
 
-    applyGravity(){
+    async loadCarModel() {
 
+        const selectedCar = localStorage.getItem('selectedCar') || 'AutoFin';
+
+        const scales = {
+            'AutoFin':   0.2,
+            'carroazul': 0.2,
+            'Troca':     0.5
+        };
+
+        const rotations = {
+            'AutoFin':   0,
+            'carroazul': 0,
+            'Troca':     0
+        };
+
+       
+
+        try {
+            const scale = scales[selectedCar] || 0.5;
+            const carModel = await loadModel(selectedCar, scale);
+
+            carModel.position.copy(this.mesh.position);
+            carModel.rotation.y = rotations[selectedCar] ?? 0;
+
+            this.scene.remove(this.mesh);
+            this.mesh = carModel;
+            this.scene.add(this.mesh);
+
+            console.log(`✅ Carro cargado: ${selectedCar}`);
+
+        } catch (error) {
+            this.mesh.material.visible = true;
+            console.warn('⚠️ No se pudo cargar el modelo, usando cubo:', error);
+        }
+    }
+
+    update(input) {
+
+        if (!this.canMove) return;
+
+        const previousPosition = this.mesh.position.clone();
+
+        if (input["w"]) {
+            this.mesh.position.z -= this.speed;
+            this.mesh.rotation.y = Math.PI;      // apunta hacia adelante
+        }
+        if (input["s"]) {
+            this.mesh.position.z += this.speed;
+            this.mesh.rotation.y = 0;            // apunta hacia atrás
+        }
+        if (input["a"]) {
+            this.mesh.position.x -= this.speed;
+            this.mesh.rotation.y = -Math.PI / 2; // apunta a la izquierda
+        }
+        if (input["d"]) {
+            this.mesh.position.x += this.speed;
+            this.mesh.rotation.y = Math.PI / 2;  // apunta a la derecha
+        }
+
+        this.mesh.userData.previousPosition = previousPosition;
+
+        this.applyGravity();
+    }
+
+    applyGravity() {
         this.velocityY -= this.gravity;
         this.mesh.position.y += this.velocityY;
 
-        // Ahora choca contra "this.floorY" en vez del "1" fijo
-        if(this.mesh.position.y <= this.floorY){
-
+        if (this.mesh.position.y <= this.floorY) {
             this.mesh.position.y = this.floorY;
             this.velocityY = 0;
-
         }
-
     }
 
-    revertPosition(){
-
-        if(this.mesh.userData.previousPosition){
-
-            this.mesh.position.copy(
-                this.mesh.userData.previousPosition
-            );
-
+    revertPosition() {
+        if (this.mesh.userData.previousPosition) {
+            this.mesh.position.copy(this.mesh.userData.previousPosition);
         }
-
     }
 
-    takeDamage(amount){
-
+    takeDamage(amount) {
         this.life -= amount;
+        console.log("Vida restante:", this.life);
 
-        console.log(
-            "Vida restante:",
-            this.life
-        );
-
-        if(this.life <= 0){
-
-            this.life = 0;
-
+        if (this.life <= 0) {
+            this.life    = 0;
             this.canMove = false;
-
-            if(this.onDeath){
-                    this.onDeath();
-                }
-
+            if (this.onDeath) this.onDeath();
         }
-
     }
-
 }
