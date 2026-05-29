@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial del Piloto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/puntuaciones.css">
+  <style>
+    .history-container { width: 80%; max-width: 800px; margin: 0 auto; color: white; font-family: 'Orbitron', sans-serif; text-align: center; }
+    .stats-box { display: flex; justify-content: space-around; background: rgba(255,44,85,0.2); padding: 20px; border: 2px solid #FF2C55; margin-bottom: 30px; }
+    .match-row { display: flex; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 15px; border-bottom: 1px solid #FF2C55; margin-bottom: 10px; }
+    .blink-text { margin-top: 40px; font-size: 20px; color: #FFD700; animation: blink 1.5s infinite; cursor: pointer;}
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="history-container">
+    <h1 style="color: #FF2C55; margin-bottom: 20px;">HISTORIAL DE PILOTO</h1>
+    
+    <div class="stats-box">
+      <div><h2>PUNTAJE GLOBAL</h2><h3 id="total-score" style="color: #FFD700;">Cargando...</h3></div>
+      <div><h2>VICTORIAS (MULTI)</h2><h3 id="total-wins" style="color: #FFD700;">Cargando...</h3></div>
+    </div>
+
+    <h2>ÚLTIMAS CARRERAS</h2>
+    <div id="history-list">
+      </div>
+
+    <div class="blink-text">>>> PRESIONA CUALQUIER TECLA PARA VOLVER <<<</div>
+  </div>
+
+  <script>
+    async function cargarHistorial() {
+      const playerId = localStorage.getItem("playerId");
+      if (!playerId) return;
+
+      const res = await fetch(`/api/historial/${playerId}`);
+      const data = await res.json();
+
+      document.getElementById('total-score').innerText = data.stats.puntaje_general + " PTS";
+      document.getElementById('total-wins').innerText = data.stats.partidas_ganadas;
+
+      const list = document.getElementById('history-list');
+      list.innerHTML = "";
+      
+      data.history.forEach(partida => {
+        list.innerHTML += `
+          <div class="match-row">
+            <span>MAPA: ${partida.mapa}</span>
+            <span>MODO: ${partida.modo_juego.toUpperCase()}</span>
+            <span style="color: #00ff00;">+${partida.puntos_ganados} PTS</span>
+          </div>
+        `;
+      });
+    }
+
+    cargarHistorial();
+
+    // Evento para salir pulsando cualquier tecla o haciendo clic
+    document.addEventListener('keydown', () => window.location.href = '/menu');
+    document.addEventListener('click', () => window.location.href = '/menu');
+  </script>
+</body>
+</html>
